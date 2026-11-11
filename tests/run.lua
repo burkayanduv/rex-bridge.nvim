@@ -18,7 +18,7 @@ local function reset()
     { block_id = 'browser', window_id = 'here', creator_name = 'browser' },
   }
   processes = {
-    claude = { foreground = { name = 'claude' } },
+    claude = { foreground = { name = 'zsh' } },
     agent = { foreground = { name = 'node', script = '/bin/opencode' } },
   }
   vim.bo.buftype = ''
@@ -67,6 +67,15 @@ local function test(name, fn)
 end
 
 test('normal command, process priority, tab scope, draft and focus', function()
+  processes.claude.foreground = { name = 'claude' }
+  assert(bridge.send())
+  assert(calls[#calls].args[5] == 'claude')
+  calls = {}
+  processes.claude.foreground = { name = 'codex' }
+  assert(bridge.send())
+  assert(calls[#calls].args[5] == 'claude')
+  calls = {}
+  processes.claude.foreground = { name = 'zsh' }
   vim.cmd('RexBridgeSend')
   assert(pasted() == '\27[200~@example.lua\27[201~')
   assert(calls[#calls].args[4] == 'focus' and calls[#calls].args[5] == 'agent')
@@ -108,6 +117,7 @@ test('custom process list replaces defaults and setup resets', function()
 end)
 
 test('process callback is evaluated on each send and supports names and lists', function()
+  processes.claude.foreground = { name = 'claude' }
   local selected, invocations = 'claude', 0
   bridge.setup({ processes = function()
     invocations = invocations + 1
@@ -144,6 +154,7 @@ test('defaults fall back to codex', function()
 end)
 
 test('static single process name', function()
+  processes.claude.foreground = { name = 'claude' }
   bridge.setup({ processes = 'claude' })
   assert(bridge.send())
   assert(calls[#calls].args[5] == 'claude')

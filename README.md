@@ -17,7 +17,7 @@ Neovim 0.10+, the `rex` CLI on PATH, and Neovim running inside a Rex terminal. R
 return {
   'burkayanduv/rex-bridge.nvim',
   opts = {
-    processes = { 'opencode', 'claude', 'codex' }, -- ordered preference
+    processes = { 'claude', 'codex', 'opencode' }, -- ordered preference
     focus = true,
   },
   keys = {
@@ -33,7 +33,7 @@ These are the defaults; `opts = {}` is enough. With another plugin manager, call
 ```lua
 opts = {
   processes = function()
-    return vim.b.ai_process or { 'opencode', 'claude', 'codex' }
+    return vim.b.ai_process or { 'claude', 'codex', 'opencode' }
   end,
 }
 ```

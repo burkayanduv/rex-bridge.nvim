@@ -2,7 +2,7 @@
 -- Adapted from code-bridge.nvim; simplified for Rex, 2026-11-10.
 local M = {}
 
-local defaults = { processes = { "opencode", "claude", "codex" }, focus = true }
+local defaults = { processes = { "claude", "codex", "opencode" }, focus = true }
 local config = vim.deepcopy(defaults)
 
 local function process_names(value)
